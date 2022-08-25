@@ -4,15 +4,48 @@
 
 <h1>signup</h1>
 <p>
-first_name = models.CharField(max_length=255)
-last_name = models.CharField(max_length=255)
-user_name = models.CharField(max_length=255)
-email = models.CharField(max_length=255)
-phone = models.CharField(max_length=255)
-security_question = models.CharField(max_length=255)
-answer = models.CharField(max_length=255)
-ssn = models.CharField(max_length=255)
-password = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
+ = models.CharField(max_length=255)
 </p>
+
+<form action="addrecord/" method="post">
+{% csrf_token %}
+First Name:<br>
+<input name="first_name">
+<br><br>
+Last Name:<br>
+<input name="last_name">
+<br><br>
+User Name:<br>
+<input name="user_name">
+<br><br>
+Password:<br>
+<input name="password">
+<br><br>
+SSN:<br>
+<input name="ssn">
+<br><br>
+Email:<br>
+<input name="email">
+<br><br>
+Phone Number:<br>
+<input name="phone">
+<br><br>
+Security Question:<br>
+<input name="security_question">
+<br><br>
+Answer:<br>
+<input name="answer">
+<br><br>
+<input type="submit" value="sign up">
+</form>
+
 </body>
 </html>
