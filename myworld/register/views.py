@@ -43,7 +43,7 @@ def loging(request):
             messages.add_message(request, messages.ERROR, 'your username and password didnt match')
             return HttpResponseRedirect(reverse('login'))
     except:
-        messages.add_message(request, messages.ERROR, 'your SSN was not found, please sign up')
+        messages.add_message(request, messages.ERROR, 'your username was not found, please sign up')
         return HttpResponseRedirect(reverse('login'))
 
 def loged_in(request):
