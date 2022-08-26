@@ -43,7 +43,7 @@ def loging(request):
             messages.add_message(request, messages.ERROR, 'your username and password didnt match')
             return HttpResponseRedirect(reverse('login'))
     except:
-        messages.add_message(request, messages.ERROR, 'please enter your username and password correctly')
+        messages.add_message(request, messages.ERROR, 'your SSN was not found, please sign up')
         return HttpResponseRedirect(reverse('login'))
 
 def loged_in(request):
@@ -62,13 +62,17 @@ def check(request):
     ssn = request.POST['ssn']
     security_question = request.POST['security_question']
     answer = request.POST['answer']
-    member = Members.objects.get(ssn=ssn)
-    if security_question == member.security_question and answer == member.answer:
-        global member_checked
-        member_checked = member
-        return HttpResponseRedirect(reverse('checked'))
-    else:
-        messages.add_message(request, messages.ERROR, 'your entries are not matched!')
+    try:
+        member = Members.objects.get(ssn=ssn)
+        if security_question == member.security_question and answer == member.answer:
+            global member_checked
+            member_checked = member
+            return HttpResponseRedirect(reverse('checked'))
+        else:
+            messages.add_message(request, messages.ERROR, 'your entries are not matched!')
+            return HttpResponseRedirect(reverse('forget'))
+    except:
+        messages.add_message(request, messages.ERROR, 'your SSN was not found, please sign up')
         return HttpResponseRedirect(reverse('forget'))
 
 def checked(request):
@@ -86,3 +90,8 @@ def reset(request):
     member_checked.password = password
     member_checked.save()
     return HttpResponseRedirect(reverse('login'))
+
+def delete(request):
+    global member_logedin
+    member_logedin.delete()
+    return HttpResponseRedirect(reverse('index'))

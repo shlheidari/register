@@ -12,4 +12,5 @@ urlpatterns = [
     path('login/forget/check/', views.check, name='check'),
     path('checked/', views.checked, name='checked'),
     path('checked/reset/', views.reset, name='reset'),
+    path('loged_in/delete/', views.delete, name='delete'),
 ]
