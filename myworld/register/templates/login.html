@@ -21,6 +21,9 @@ Password:<br>
 <a href="forget/">forget</a>
 </p>
 
+<br><br>
+<a href="{% url 'signup' %}">signup</a>
+
 {% if messages %}
   {% for message in messages %}
     {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}

@@ -13,4 +13,6 @@ urlpatterns = [
     path('checked/', views.checked, name='checked'),
     path('checked/reset/', views.reset, name='reset'),
     path('loged_in/delete/', views.delete, name='delete'),
+    path(r'^login$', views.login, name='login'),
+    path(r'^signup$', views.signup, name='signup'),
 ]
