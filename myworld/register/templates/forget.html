@@ -2,24 +2,21 @@
 <html>
 <body>
 
-<h1>login</h1>
+<h1>forget</h1>
 
-<form action="loging/" method="post">
+<form action="check/" method="post">
 {% csrf_token %}
-
-User Name:<br>
-<input name="user_name">
+SSN:<br>
+<input name="ssn">
 <br><br>
-Password:<br>
-<input name="password">
+Security Question:<br>
+<input name="security_question">
 <br><br>
-
-<input type="submit" value="log in">
+Answer:<br>
+<input name="answer">
+<br><br>
+<input type="submit" value="check">
 </form>
-
-<p>
-<a href="forget/">forget</a>
-</p>
 
 {% if messages %}
   {% for message in messages %}

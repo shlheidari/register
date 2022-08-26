@@ -34,9 +34,10 @@ def loging(request):
     user_name = request.POST['user_name']
     password = request.POST['password']
     try:
-        global member
         member = Members.objects.get(user_name=user_name)
         if password == member.password:
+            global member_logedin
+            member_logedin = member
             return HttpResponseRedirect(reverse('loged_in'))
         else:
             messages.add_message(request, messages.ERROR, 'your username and password didnt match')
@@ -46,9 +47,42 @@ def loging(request):
         return HttpResponseRedirect(reverse('login'))
 
 def loged_in(request):
-    global member
+    global member_logedin
     context = {
-      'first_name' : member.first_name , 'last_name' : member.last_name, 'user_name' : member.user_name, 'password' : member.password, 'ssn': member.ssn, 'email' : member.email, 'phone' : member.phone, 'security_question' : member.security_question, 'answer' : member.answer
+      'first_name' : member_logedin.first_name , 'last_name' : member_logedin.last_name, 'user_name' : member_logedin.user_name, 'password' : member_logedin.password, 'ssn': member_logedin.ssn, 'email' : member_logedin.email, 'phone' : member_logedin.phone, 'security_question' : member_logedin.security_question, 'answer' : member_logedin.answer
     }
     template = loader.get_template('loged_in.html')
     return HttpResponse(template.render(context,request))
+
+def forget(request):
+    template = loader.get_template('forget.html')
+    return HttpResponse(template.render({},request))
+
+def check(request):
+    ssn = request.POST['ssn']
+    security_question = request.POST['security_question']
+    answer = request.POST['answer']
+    member = Members.objects.get(ssn=ssn)
+    if security_question == member.security_question and answer == member.answer:
+        global member_checked
+        member_checked = member
+        return HttpResponseRedirect(reverse('checked'))
+    else:
+        messages.add_message(request, messages.ERROR, 'your entries are not matched!')
+        return HttpResponseRedirect(reverse('forget'))
+
+def checked(request):
+    global member_checked
+    context = {
+      'user_name' : member_checked.user_name
+    }
+    template = loader.get_template('checked.html')
+    return HttpResponse(template.render(context,request))
+
+def reset(request):
+    global member_checked
+    member_checked = member_checked
+    password = request.POST['password']
+    member_checked.password = password
+    member_checked.save()
+    return HttpResponseRedirect(reverse('login'))

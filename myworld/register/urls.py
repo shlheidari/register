@@ -8,4 +8,8 @@ urlpatterns = [
     path('signup/addrecord/', views.addrecord, name='addrecord'),
     path('login/loging/', views.loging, name='loging'),
     path('loged_in/', views.loged_in, name='loged_in'),
+    path('login/forget/', views.forget, name='forget'),
+    path('login/forget/check/', views.check, name='check'),
+    path('checked/', views.checked, name='checked'),
+    path('checked/reset/', views.reset, name='reset'),
 ]

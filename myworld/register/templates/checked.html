@@ -2,24 +2,23 @@
 <html>
 <body>
 
-<h1>login</h1>
+<h1>reset password</h1>
 
-<form action="loging/" method="post">
+<form action="reset/" method="post">
 {% csrf_token %}
 
 User Name:<br>
-<input name="user_name">
+<tr>
+<td>{{ user_name }}</td>
+</tr>
 <br><br>
 Password:<br>
 <input name="password">
 <br><br>
 
-<input type="submit" value="log in">
+<input type="submit" value="reset">
 </form>
 
-<p>
-<a href="forget/">forget</a>
-</p>
 
 {% if messages %}
   {% for message in messages %}
