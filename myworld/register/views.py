@@ -15,12 +15,6 @@ def login(request):
     return HttpResponse(template.render({},request))
 
 def signup(request):
-    user_name = 'user_name'
-    ssn = 'ssn'
-    email = 'email'
-    phone = 'phone'
-    for member in Members.objects.all():
-        print(member.email)
     template = loader.get_template('signup.html')
     return HttpResponse(template.render({},request))
 
@@ -62,8 +56,10 @@ def loging(request):
 
 def loged_in(request,user_name):
     member = Members.objects.get(user_name=user_name)
+    security_questions = ("In what city were you born?", "What is the name of your favorite pet?" ,"What is your mother's maiden name?", "What high school did you attend?", "What was the name of your elementary school?", "What was the make of your first car?", "What was your favorite food as a child?")
+    security_question  = security_questions[int(member.security_question)-1]
     context = {
-      'first_name' : member.first_name , 'last_name' : member.last_name, 'user_name' : member.user_name, 'password' : member.password, 'ssn': member.ssn, 'email' : member.email, 'phone' : member.phone, 'security_question' : member.security_question, 'answer' : member.answer
+      'first_name' : member.first_name , 'last_name' : member.last_name, 'user_name' : member.user_name, 'password' : member.password, 'ssn': member.ssn, 'email' : member.email, 'phone' : member.phone, 'security_question' : security_question, 'answer' : member.answer
     }
     template = loader.get_template('loged_in.html')
     return HttpResponse(template.render(context,request))
@@ -81,6 +77,7 @@ def check(request):
         if security_question == member.security_question and answer == member.answer:
             return HttpResponseRedirect(reverse('checked',args=[member.user_name]))
         else:
+            print(security_question , member.security_question , answer , member.answer)
             messages.add_message(request, messages.ERROR, 'your entries are not matched!')
             return HttpResponseRedirect(reverse('forget'))
     except:
@@ -109,7 +106,22 @@ def delete(request,user_name):
 def change(request,user_name):
     filed = request.POST['filed']
     req = request.POST[filed]
-    member = Members.objects.get(user_name=user_name)
-    setattr(member,filed,req)
-    member.save()
-    return HttpResponseRedirect(reverse('loged_in',args=[member.user_name]))
+    if filed == 'phone' or filed == 'email' or filed == 'ssn' or filed == 'user_name':
+        check=0
+        for member in Members.objects.all():
+            attr = getattr(member,filed,None)
+            if attr == req:
+                check=1
+        if(check == 0):
+            member = Members.objects.get(user_name=user_name)
+            setattr(member,filed,req)
+            member.save()
+            return HttpResponseRedirect(reverse('loged_in',args=[member.user_name]))
+        else:
+            messages.add_message(request, messages.ERROR, 'you have already signed up!')
+            return HttpResponseRedirect(reverse('loged_in',args=[member.user_name]))
+    else:
+        member = Members.objects.get(user_name=user_name)
+        setattr(member,filed,req)
+        member.save()
+        return HttpResponseRedirect(reverse('loged_in',args=[member.user_name]))

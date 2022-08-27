@@ -7,12 +7,10 @@
 <form action="change/{{ user_name }}" method="post" id="p01" style="display:none;">
 {% csrf_token %}
 <p id="p02"></p>
-<input name="" id="p03">
+<input name="" id="p03" type="">
 <input name="filed" id="p04" value="" hidden>
 <br><br>
 <input type="submit" value="reset">
-
-
 </form>
 
 First Name:<br>
@@ -20,39 +18,56 @@ First Name:<br>
 <td>{{ first_name }}</td>
 </tr>
 
-<button type="button" onclick="change('First Name:','first_name')">change</button>
+<button type="button" onclick="change('First Name:','first_name','t')">change</button>
 <br><br>
 Last Name:<br>
 <tr> <td>{{last_name}}</td> </tr>
-<button type="button" onclick="change('Last Name:','last_name')">change</button>
+<button type="button" onclick="change('Last Name:','last_name','t')">change</button>
 <br><br>
 User Name:<br>
 <tr> <td>{{user_name}}</td> </tr>
-<button type="button" onclick="change('User Name:','user_name')">change</button>
+<button type="button" onclick="change('User Name:','user_name','t')">change</button>
 <br><br>
 Password:<br>
 <tr> <td>{{password}}</td> </tr>
-<button type="button" onclick="change('Password:','password')">change</button>
+<button type="button" onclick="change('Password:','password','p')">change</button>
 <br><br>
 SSN:<br>
 <tr> <td>{{ssn}}</td> </tr>
-<button type="button" onclick="change('SSN:','ssn')">change</button>
+<button type="button" onclick="change('SSN:','ssn','n')">change</button>
 <br><br>
 Email:<br>
 <tr> <td>{{email}}</td> </tr>
-<button type="button" onclick="change('Email:','email')">change</button>
+<button type="button" onclick="change('Email:','email','e')">change</button>
 <br><br>
 Phone Number:<br>
 <tr> <td>{{phone}}</td> </tr>
-<button type="button" onclick="change('Phone Number:','phone')">change</button>
+<button type="button" onclick="change('Phone Number:','phone','n')">change</button>
 <br><br>
 Security Question:<br>
 <tr> <td>{{security_question}}</td> </tr>
-<button type="button" onclick="change('Security Question:','security_question')">change</button>
+<button type="button" onclick="changes()">change</button>
+
+<form action="change/{{ user_name }}" method="post" id="p05" style="display:none;">
+{% csrf_token %}
+<input name="filed" value="security_question" hidden>
+<label for="security_question">Security Question:<br></label>
+<select name="security_question" required>
+  <option value="1">In what city were you born?</option>
+  <option value="2">What is the name of your favorite pet?</option>
+  <option value="3">What is your mother's maiden name?</option>
+  <option value="4">What high school did you attend?</option>
+  <option value="5">What was the name of your elementary school?</option>
+  <option value="6">What was the make of your first car?</option>
+  <option value="7">What was your favorite food as a child?</option>
+</select>
+<input type="submit" value="reset">
+</form>
+
 <br><br>
 Answer:<br>
 <tr> <td>{{answer}}</td> </tr>
-<button type="button" onclick="change('Answer:','answer')">change</button>
+<button type="button" onclick="change('Answer:','answer','t')">change</button>
 <br><br
 
 <p>
@@ -64,7 +79,7 @@ Answer:<br>
 
 <script>
 
-function change(page,sql) {
+function change(page,sql,type) {
   var x = document.getElementById("p01");
     if (x.style.display === "none") {
       x.style.display = "block";
@@ -74,11 +89,32 @@ function change(page,sql) {
     document.getElementById("p02").innerHTML = page;
     document.getElementById("p03").name = sql;
     document.getElementById("p04").value = sql;
-    
+    if (type=='t') {
+      document.getElementById("p03").type = 'text';
+    } else if (type=='p') {
+      document.getElementById("p03").type = 'password'
+    } else if (type=='n') {
+      document.getElementById("p03").type = 'number'
+    } else {
+      document.getElementById("p03").type = 'email'
+    }
 }
 
-
+function changes() {
+  var x = document.getElementById("p05");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+}
 </script>
+
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+  {% endfor %}
+{% endif %}
 
 </body>
 </html>
