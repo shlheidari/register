@@ -4,7 +4,7 @@
 
 <h1>loged in successfully</h1>
 
-<form action="change/" method="post" id="p01" style="display:none;">
+<form action="change/{{ user_name }}" method="post" id="p01" style="display:none;">
 {% csrf_token %}
 <p id="p02"></p>
 <input name="" id="p03">
@@ -56,7 +56,7 @@ Answer:<br>
 <br><br
 
 <p>
-<a href="delete/">delete account</a>
+<a href="delete/{{ user_name }}">delete account</a>
 </p>
 
 <br><br>
@@ -74,6 +74,7 @@ function change(page,sql) {
     document.getElementById("p02").innerHTML = page;
     document.getElementById("p03").name = sql;
     document.getElementById("p04").value = sql;
+    
 }
 
 

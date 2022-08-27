@@ -38,9 +38,7 @@ def loging(request):
     try:
         member = Members.objects.get(user_name=user_name)
         if password == member.password:
-            global member_logedin
-            member_logedin = member
-            return HttpResponseRedirect(reverse('loged_in'))
+            return HttpResponseRedirect(reverse('loged_in',args=[user_name]))
         else:
             messages.add_message(request, messages.ERROR, 'your username and password didnt match')
             return HttpResponseRedirect(reverse('login'))
@@ -48,10 +46,10 @@ def loging(request):
         messages.add_message(request, messages.ERROR, 'your username was not found, please sign up')
         return HttpResponseRedirect(reverse('login'))
 
-def loged_in(request):
-    global member_logedin
+def loged_in(request,user_name):
+    member = Members.objects.get(user_name=user_name)
     context = {
-      'first_name' : member_logedin.first_name , 'last_name' : member_logedin.last_name, 'user_name' : member_logedin.user_name, 'password' : member_logedin.password, 'ssn': member_logedin.ssn, 'email' : member_logedin.email, 'phone' : member_logedin.phone, 'security_question' : member_logedin.security_question, 'answer' : member_logedin.answer
+      'first_name' : member.first_name , 'last_name' : member.last_name, 'user_name' : member.user_name, 'password' : member.password, 'ssn': member.ssn, 'email' : member.email, 'phone' : member.phone, 'security_question' : member.security_question, 'answer' : member.answer
     }
     template = loader.get_template('loged_in.html')
     return HttpResponse(template.render(context,request))
@@ -67,9 +65,7 @@ def check(request):
     try:
         member = Members.objects.get(ssn=ssn)
         if security_question == member.security_question and answer == member.answer:
-            global member_checked
-            member_checked = member
-            return HttpResponseRedirect(reverse('checked'))
+            return HttpResponseRedirect(reverse('checked',args=[member.user_name]))
         else:
             messages.add_message(request, messages.ERROR, 'your entries are not matched!')
             return HttpResponseRedirect(reverse('forget'))
@@ -77,30 +73,29 @@ def check(request):
         messages.add_message(request, messages.ERROR, 'your SSN was not found, please sign up')
         return HttpResponseRedirect(reverse('forget'))
 
-def checked(request):
-    global member_checked
+def checked(request,user_name):
     context = {
-      'user_name' : member_checked.user_name
+      'user_name' : user_name
     }
     template = loader.get_template('checked.html')
     return HttpResponse(template.render(context,request))
 
-def reset(request):
-    global member_checked
-    member_checked = member_checked
+def reset(request,user_name):
+    member = Members.objects.get(user_name=user_name)
     password = request.POST['password']
-    member_checked.password = password
-    member_checked.save()
+    member.password = password
+    member.save()
     return HttpResponseRedirect(reverse('login'))
 
-def delete(request):
-    global member_logedin
-    member_logedin.delete()
+def delete(request,user_name):
+    member = Members.objects.get(user_name=user_name)
+    member.delete()
     return HttpResponseRedirect(reverse('index'))
 
-def change(request):
+def change(request,user_name):
     filed = request.POST['filed']
     req = request.POST[filed]
-    global member_logedin
-    setattr(member_logedin,filed,req)
-    return HttpResponseRedirect(reverse('loged_in'))
+    member = Members.objects.get(user_name=user_name)
+    setattr(member,filed,req)
+    member.save()
+    return HttpResponseRedirect(reverse('loged_in',args=[member.user_name]))

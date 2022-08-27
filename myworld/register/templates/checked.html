@@ -4,7 +4,7 @@
 
 <h1>reset password</h1>
 
-<form action="reset/" method="post">
+<form action="reset/{{ user_name }}" method="post">
 {% csrf_token %}
 
 User Name:<br>
