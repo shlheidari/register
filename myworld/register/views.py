@@ -4,6 +4,8 @@ from django.urls import reverse
 from .models import Members
 from django.contrib import messages
 
+
+
 def index(request):
   template = loader.get_template('choose.html')
   return HttpResponse(template.render({},request))
@@ -95,3 +97,10 @@ def delete(request):
     global member_logedin
     member_logedin.delete()
     return HttpResponseRedirect(reverse('index'))
+
+def change(request):
+    filed = request.POST['filed']
+    req = request.POST[filed]
+    global member_logedin
+    setattr(member_logedin,filed,req)
+    return HttpResponseRedirect(reverse('loged_in'))

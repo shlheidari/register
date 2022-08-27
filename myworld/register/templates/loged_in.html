@@ -4,34 +4,55 @@
 
 <h1>loged in successfully</h1>
 
+<form action="change/" method="post" id="p01" style="display:none;">
+{% csrf_token %}
+<p id="p02"></p>
+<input name="" id="p03">
+<input name="filed" id="p04" value="" hidden>
+<br><br>
+<input type="submit" value="reset">
+
+
+</form>
+
 First Name:<br>
 <tr>
 <td>{{ first_name }}</td>
 </tr>
+
+<button type="button" onclick="change('First Name:','first_name')">change</button>
 <br><br>
 Last Name:<br>
 <tr> <td>{{last_name}}</td> </tr>
+<button type="button" onclick="change('Last Name:','last_name')">change</button>
 <br><br>
 User Name:<br>
 <tr> <td>{{user_name}}</td> </tr>
+<button type="button" onclick="change('User Name:','user_name')">change</button>
 <br><br>
 Password:<br>
 <tr> <td>{{password}}</td> </tr>
+<button type="button" onclick="change('Password:','password')">change</button>
 <br><br>
 SSN:<br>
 <tr> <td>{{ssn}}</td> </tr>
+<button type="button" onclick="change('SSN:','ssn')">change</button>
 <br><br>
 Email:<br>
 <tr> <td>{{email}}</td> </tr>
+<button type="button" onclick="change('Email:','email')">change</button>
 <br><br>
 Phone Number:<br>
 <tr> <td>{{phone}}</td> </tr>
+<button type="button" onclick="change('Phone Number:','phone')">change</button>
 <br><br>
 Security Question:<br>
 <tr> <td>{{security_question}}</td> </tr>
+<button type="button" onclick="change('Security Question:','security_question')">change</button>
 <br><br>
 Answer:<br>
 <tr> <td>{{answer}}</td> </tr>
+<button type="button" onclick="change('Answer:','answer')">change</button>
 <br><br
 
 <p>
@@ -40,6 +61,23 @@ Answer:<br>
 
 <br><br>
 <a href="{% url 'index' %}">log out</a>
+
+<script>
+
+function change(page,sql) {
+  var x = document.getElementById("p01");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+    document.getElementById("p02").innerHTML = page;
+    document.getElementById("p03").name = sql;
+    document.getElementById("p04").value = sql;
+}
+
+
+</script>
 
 </body>
 </html>
