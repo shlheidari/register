@@ -1,43 +1,60 @@
 <!DOCTYPE html>
 <html>
+
 <body>
 
 <h1>signup</h1>
 
-<form action="addrecord/" method="post">
+<form action="addrecord/" method="post" onsubmit="required()">
 {% csrf_token %}
 First Name:<br>
-<input name="first_name">
+<input name="first_name" type="text" id='p01'required >
 <br><br>
 Last Name:<br>
-<input name="last_name">
+<input name="last_name" type="text" id='p01'required >
 <br><br>
 User Name:<br>
-<input name="user_name">
+<input name="user_name" id='p01'required >
 <br><br>
 Password:<br>
-<input name="password">
+<input name="password" id='p01'  type="password"  title="Password" required>
 <br><br>
 SSN:<br>
-<input name="ssn">
+<input name="ssn" type="number" step="1" title="SSN" id='p01' required>
 <br><br>
 Email:<br>
-<input name="email">
+<input name="email" type="email" title="Email" id='p01'  onclick="required()" required>
 <br><br>
 Phone Number:<br>
-<input name="phone">
+<input name="phone" type="number" step="1" title="Phone Number" id='p01' required>
 <br><br>
-Security Question:<br>
-<input name="security_question">
+<label for="security_question">Security Question:<br></label>
+<select name="security_question" id='p01' >
+  <option value="1">In what city were you born?</option>
+  <option value="2">What is the name of your favorite pet?</option>
+  <option value="3">What is your mother's maiden name?</option>
+  <option value="4">What high school did you attend?</option>
+  <option value="5">What was the name of your elementary school?</option>
+  <option value="6">What was the make of your first car?</option>
+  <option value="7">What was your favorite food as a child?</option>
+</select>
 <br><br>
 Answer:<br>
-<input name="answer">
+<input name="answer" id='p01' required>
 <br><br>
-<input type="submit" value="sign up">
+<input type="submit" value="sign up" >
 </form>
 <br><br>
 <a href="{% url 'login' %}">login</a>
 <br><br>
 <a href="{% url 'index' %}">first page</a>
+</div>
+
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+  {% endfor %}
+{% endif %}
+</body>
 </body>
 </html>

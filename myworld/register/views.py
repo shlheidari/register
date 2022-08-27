@@ -15,22 +15,36 @@ def login(request):
     return HttpResponse(template.render({},request))
 
 def signup(request):
+    user_name = 'user_name'
+    ssn = 'ssn'
+    email = 'email'
+    phone = 'phone'
+    for member in Members.objects.all():
+        print(member.email)
     template = loader.get_template('signup.html')
     return HttpResponse(template.render({},request))
 
 def addrecord(request):
-  first_name = request.POST['first_name']
-  last_name = request.POST['last_name']
   user_name = request.POST['user_name']
-  password = request.POST['password']
   ssn = request.POST['ssn']
   email = request.POST['email']
   phone = request.POST['phone']
-  security_question = request.POST['security_question']
-  answer = request.POST['answer']
-  member = Members(first_name = first_name, last_name = last_name, user_name = user_name, password = password, ssn = ssn, email = email, phone = phone, security_question = security_question, answer = answer)
-  member.save()
-  return HttpResponseRedirect(reverse('index'))
+  check = 0
+  for member in Members.objects.all():
+      if member.user_name == user_name or member.ssn == ssn or member.email == email or member.phone == phone:
+          check=1
+  if(check == 0):
+      first_name = request.POST['first_name']
+      last_name = request.POST['last_name']
+      password = request.POST['password']
+      security_question = request.POST['security_question']
+      answer = request.POST['answer']
+      member = Members(first_name = first_name, last_name = last_name, user_name = user_name, password = password, ssn = ssn, email = email, phone = phone, security_question = security_question, answer = answer)
+      member.save()
+      return HttpResponseRedirect(reverse('index'))
+  else:
+      messages.add_message(request, messages.ERROR, 'you have already signed up!')
+      return HttpResponseRedirect(reverse('signup'))
 
 def loging(request):
     user_name = request.POST['user_name']
